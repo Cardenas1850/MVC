@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const { truncate } = require('lodash');
 const sequelize = require('../config/connection');
 
 const {
@@ -39,7 +38,7 @@ router.get('/', withAuth, (req, res) => {
         const posts = dbPostData.map(post => post.get({
             plain: true
         }));
-        res.render('dashborad', {
+        res.render('dashboard', {
             posts,
             loggedIn: true
         });

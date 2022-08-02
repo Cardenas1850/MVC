@@ -27,6 +27,7 @@ router.get('/:id', (req, res) => {
             id: req.params.id,
         },
         include: [{
+            model: Post,
             attibutes: ['id', 'title', 'content', 'created_at']
         },
         {
@@ -112,7 +113,7 @@ router.post('/login', (req, res) => {
 
             res.json({
                 user: dbUserData,
-                message: 'You are now lohhed in'
+                message: 'You are now logged in'
             });
         });
     });
@@ -124,7 +125,7 @@ router.post('/logout', (req, res) => {
             res.status(204).end();
         });
     } else {
-        res.status(404);
+        res.status(404).end();
     }
 }); 
 

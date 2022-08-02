@@ -4,11 +4,11 @@ const {
     User,
     Post,
     Comment
-} = require('../models');
+} =require('../models');
 
 router.get('/', (req, res) => {
     Post.findAll({
-        attributes : [
+        attributes: [
             'id',
             'title',
             'content',
@@ -22,26 +22,25 @@ router.get('/', (req, res) => {
                 attributes: ['username']
             }
         },
-    {
-        model: User,
-        attributes: ['username']
-    }
-    ]   
-})
-.then(dbPostData => {
-    const posts = dbPostData.map(post => post.get({
-        plain: true
-    }));
-
-    res.render('homepage', {
-        posts,
-        loggedIn: req.session.loggedIn
+        {
+            model: User,
+            attributes: ['username']
+        }
+    ]
+    }) 
+    .then(dbPostData => {
+        const posts = dbPostData.map(post => post.get({
+            plain: true
+        }));
+        res.render('homepage', {
+            posts,
+            loggedIn: req.session.loggedIn
+        });
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
     });
-})
-.catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-});
 });
 
 router.get('/post/:id', (req, res) => {
@@ -66,27 +65,29 @@ router.get('/post/:id', (req, res) => {
         {
             model: User,
             attributes: ['username']
-        }
+        },
     ]
     })
     .then(dbPostData => {
         if (!dbPostData) {
             res.status(404).json({
-                message: 'No post found with this ID'
+                message: 'No post found with this id'
             });
             return;
         }
+
         const post = dbPostData.get({
             plain: true
         });
-        res.render('single-post',{
+
+        res.render('single-post', {
             post,
             loggedIn: req.session.loggedIn
         });
     })
     .catch(err => {
         console.log(err);
-        res.status(500).json(err);
+        res.status(500),json(err);
     });
 });
 
@@ -106,8 +107,8 @@ router.get('/signup', (req, res) => {
     res.render('signup');
 });
 
-router.get('*',(req, res) => {
-    res.status(404).send("Cant go there!")
-})
+router.get('*', (req, res) => {
+    res.status(404).send("Can't go there!");
+});
 
 module.exports = router;
